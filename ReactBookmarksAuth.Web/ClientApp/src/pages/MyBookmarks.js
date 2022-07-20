@@ -5,31 +5,30 @@ import BookmarkRow from '../components/BookmarkRow';
 import { Link } from 'react-router-dom';
 
 const MyBookmarks = () => {
-    const [bookmarks, setBookmarks] = useState([]);
     const { user } = useAuthContext();
+    const [bookmarks, setBookmarks] = useState([]);
+
+    const getMyBookmarks = async () => {
+        const { data } = await axios.get(`/api/bookmark/mybookmarks?id=${user.id}`);
+        setBookmarks(data);
+    }
 
     useEffect(() => {
-        const getMyBookmarks = async () => {
-            const { data } = await axios.get(`/api/bookmark/mybookmarks?id=${user.id}`);
-            setBookmarks(data);
-        }
         getMyBookmarks();
     }, []);
 
     const onUpdateClick = async (bookmark) => {
         await axios.post('/api/bookmark/updatebookmark', { ...bookmark });
-        const { data } = await axios.get(`/api/bookmark/mybookmarks?id=${user.id}`);
-        setBookmarks(data);
+        await getMyBookmarks();
     }
 
     const onDeleteClick = async (bookmark) => {
         await axios.post('/api/bookmark/deletebookmark', { ...bookmark });
-        const { data } = await axios.get(`/api/bookmark/mybookmarks?id=${user.id}`);
-        setBookmarks(data);
+        getMyBookmarks();
     }
 
-
-    return (<div className="container">
+    return (
+        <div className="container">
         <div className="row">
             <div className="col-md-12">
                 <h1>Welcome back {`${user.firstName} ${user.lastName}`}!</h1>

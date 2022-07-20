@@ -21,7 +21,7 @@ const BookmarkRow = ({ bookmark, onDeleteClick, OnUpdateClick }) => {
 
     return (<tr>
         <td>
-            {!editState ? title  : <input type="text" className="form-control" placeholder="Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} />}
+            {!editState ? title : <input type="text" className="form-control" placeholder="Title" defaultValue={title} onChange={e => setNewTitle(e.target.value)} />}
         </td>
 
         <td><a href={`${url}`} target="_blank">{url}</a></td>
